@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proddyt Switch</title>
+<meta name="description" content="Suíte de apps da Proddyt Labs: forks dos Crafting Apps (ArtCraft) com features próprias, builds automáticas e instalador.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23e8a33d'/><path d='M9 11h14M9 16h10M9 21h14' stroke='%23111' stroke-width='3' stroke-linecap='round'/></svg>">
+<style>
+:root{--bg:#f7f6f3;--card:#fff;--text:#1b1a17;--muted:#6b675f;--line:#e4e1da;--accent:#c97f12;--accent-soft:#fbefd9;--code:#f0eee8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--card:#1d1c1a;--text:#ecebe7;--muted:#a19d94;--line:#2e2c29;--accent:#e8a33d;--accent-soft:#2c2416;--code:#262522}}
+:root[data-theme="dark"]{--bg:#141413;--card:#1d1c1a;--text:#ecebe7;--muted:#a19d94;--line:#2e2c29;--accent:#e8a33d;--accent-soft:#2c2416;--code:#262522}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1040px;margin:0 auto;padding:40px 16px 64px}
+a{color:var(--accent)}
+h1{font-size:clamp(28px,5vw,40px);margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:22px;margin:48px 0 12px}
+.lead{color:var(--muted);max-width:680px;margin:0}
+.tag{display:inline-block;font-size:12px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:3px 10px;border-radius:99px;margin-bottom:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:20px}
+.app{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.app h3{margin:0;font-size:17px}
+.app p{margin:0;color:var(--muted);font-size:14px;flex:1}
+.app .ver{font-size:12px;color:var(--muted);font-family:ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+.btns{display:flex;flex-wrap:wrap;gap:6px}
+.btn{font-size:13px;text-decoration:none;padding:5px 10px;border-radius:7px;border:1px solid var(--line);color:var(--text)}
+.btn.main{background:var(--accent);border-color:var(--accent);color:#141413;font-weight:600}
+.btn[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.box h3{margin:0 0 6px;font-size:16px}
+.box p,.box li{color:var(--muted);font-size:14.5px}
+.box ul{padding-left:18px;margin:6px 0 0}
+code{font-family:ui-monospace,Consolas,monospace;font-size:.88em;background:var(--code);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+pre{background:var(--code);padding:12px 14px;border-radius:8px;overflow-x:auto;font-size:13px}
+footer{margin-top:56px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+</style>
+</head>
+<body>
+<main>
+  <span class="tag">Proddyt Labs</span>
+  <h1>Proddyt Switch</h1>
+  <p class="lead">Suíte de apps desktop da Proddyt Labs. Cada app é um fork dos <a href="https://github.com/storytold">Crafting Apps (ArtCraft)</a> — reimplementações open-source em Rust de ferramentas como Acrobat, Photoshop e Excel — com features próprias, sincronia diária com o projeto original e build automático pra Windows, Linux e macOS.</p>
+
+  <h2>Apps</h2>
+  <div class="grid" id="apps"></div>
+
+  <h2>Como funciona</h2>
+  <div class="cols">
+    <div class="box"><h3>Portátil = testar</h3><p>Zip/tar que roda sem instalar. Serve pra testar a versão mais nova da <code>main</code> antes de usar no dia a dia.</p></div>
+    <div class="box"><h3>Instalador = usar</h3><p>No Windows, <code>&lt;app&gt;-windows-x64-setup.exe</code>: instala só pro usuário (sem admin), com atalho no menu Iniciar e opcional na área de trabalho.</p></div>
+    <div class="box"><h3>Release automática</h3><p>Todo push na <code>main</code> (e todo dia depois da sincronia) gera uma Release <code>v&lt;versão&gt;-labs.&lt;data&gt;.&lt;commit&gt;</code> com os pacotes dos 3 sistemas.</p></div>
+    <div class="box"><h3>Sincronia com o original</h3><p>Todo dia o fork puxa a <code>main</code> do projeto original (<code>storytold</code>). Se houver conflito com uma feature nossa, a sincronia para e avisa — nada é sobrescrito.</p></div>
+  </div>
+
+  <h2>Usar com uma IA (MCP)</h2>
+  <div class="box">
+    <p>Todo app traz um servidor <a href="https://modelcontextprotocol.io">MCP</a> no CLI que vem junto no pacote. Exemplo no Claude Code:</p>
+    <pre>claude mcp add print-labs -- "C:\caminho\printcraft-cli.exe" mcp --root "C:\Meus PDFs"</pre>
+    <p>O <code>--root</code> limita a IA àquela pasta.</p>
+  </div>
+
+  <h2>Repositórios</h2>
+  <div class="box">
+    <ul>
+      <li>Apps: <code>Proddyt-Labs/&lt;app&gt;-labs</code> — marcados com o topic <a href="https://github.com/topics/proddyt-switch"><code>proddyt-switch</code></a>.</li>
+      <li>Base: <a href="https://github.com/Proddyt-Labs/artcraft">artcraft</a>, <a href="https://github.com/Proddyt-Labs/artcraftx">artcraftx</a>, <a href="https://github.com/Proddyt-Labs/craft-fonts">craft-fonts</a>.</li>
+      <li>Licenças: as do projeto original (MIT/Apache-2.0 na maioria). Créditos de autoria ficam com <a href="https://github.com/storytold">storytold</a>.</li>
+    </ul>
+  </div>
+
+  <footer>Proddyt Labs · <a href="https://proddyt.com">proddyt.com</a> · <a href="https://github.com/Proddyt-Labs">github.com/Proddyt-Labs</a></footer>
+</main>
+<script>
+const APPS = [
+  ["print-labs", "Print Labs", "PDF: leitura, anotação e edição (estilo Acrobat). No fork: biblioteca com pastas, coleções e progresso de leitura."],
+  ["photo-labs", "Photo Labs", "Edição de imagem em camadas (estilo Photoshop)."],
+  ["vector-labs", "Vector Labs", "Ilustração vetorial (estilo Illustrator)."],
+  ["film-labs", "Film Labs", "Edição de vídeo (estilo Premiere Pro)."],
+  ["light-labs", "Light Labs", "Revelação e catálogo de fotos (estilo Lightroom)."],
+  ["effect-labs", "Effect Labs", "Motion graphics e efeitos (estilo After Effects)."],
+  ["design-labs", "Design Labs", "Diagramação e publicação (estilo InDesign)."],
+  ["sound-labs", "Sound Labs", "Gravação e mixagem de áudio (estilo Pro Tools)."],
+  ["word-labs", "Word Labs", "Editor de texto (estilo Word)."],
+  ["grid-labs", "Grid Labs", "Planilhas (estilo Excel)."],
+  ["deck-labs", "Deck Labs", "Apresentações (estilo PowerPoint)."],
+  ["cad-labs", "CAD Labs", "Desenho técnico e CAD (estilo AutoCAD)."],
+];
+const el = document.getElementById("apps");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+for (const [repo, nome, desc] of APPS) {
+  const card = document.createElement("article");
+  card.className = "app";
+  card.innerHTML = `<h3>${esc(nome)}</h3><p>${esc(desc)}</p><div class="ver" data-ver>buscando versão…</div>
+    <div class="btns">
+      <a class="btn main" data-k="setup" aria-disabled="true">Instalador Windows</a>
+      <a class="btn" data-k="windows-x64-portable" aria-disabled="true">Portátil Win</a>
+      <a class="btn" data-k="linux-x64-portable" aria-disabled="true">Linux</a>
+      <a class="btn" data-k="macos-arm64-portable" aria-disabled="true">macOS</a>
+      <a class="btn" href="https://github.com/Proddyt-Labs/${repo}">Código</a>
+    </div>`;
+  el.appendChild(card);
+  fetch(`https://api.github.com/repos/Proddyt-Labs/${repo}/releases/latest`)
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(rel => {
+      card.querySelector("[data-ver]").textContent = rel.tag_name;
+      for (const a of card.querySelectorAll("[data-k]")) {
+        const asset = rel.assets.find(x => x.name.includes(a.dataset.k));
+        if (asset) { a.href = asset.browser_download_url; a.removeAttribute("aria-disabled"); }
+      }
+    })
+    .catch(() => {
+      card.querySelector("[data-ver]").innerHTML = `ainda sem release · <a href="https://github.com/Proddyt-Labs/${repo}/releases">ver releases</a>`;
+    });
+}
+</script>
+</body>
+</html>
